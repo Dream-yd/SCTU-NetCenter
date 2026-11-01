@@ -25,6 +25,14 @@ try {
     try { await PowerShellActionRunner.RunAsync(script, TimeSpan.FromMilliseconds(500)); }
     catch (TimeoutException) { timedOut = true; }
     if (!timedOut) throw new Exception("Hung script was not stopped after the timeout");
+    var appDir = Path.Combine(dir, "网络中心 with spaces");
+    Directory.CreateDirectory(Path.Combine(appDir, "bluetooth"));
+    var receiver = Path.Combine(appDir, "bluetooth", "BluetoothAudioReceiver.exe");
+    try { BluetoothReceiverLauncher.ResolveExecutable(appDir); throw new Exception("Missing receiver was accepted"); }
+    catch (FileNotFoundException) { }
+    await File.WriteAllTextAsync(receiver, "test fixture");
+    if (BluetoothReceiverLauncher.ResolveExecutable(appDir) != receiver) throw new Exception("Bundled receiver path is incorrect");
+    File.Delete(receiver); Directory.Delete(Path.Combine(appDir, "bluetooth")); Directory.Delete(appDir);
     if (TaskbarInset.Calculate(false, 3, 48, 1, 1080, 1080) != 0 || TaskbarInset.Calculate(true, 0, 48, 1, 1080, 1080) != 0 || TaskbarInset.Calculate(true, 3, 48, 1, 1080, 1032) != 0) throw new Exception("Reserved space for a taskbar that is already accounted for");
     if (TaskbarInset.Calculate(true, 3, 60, 1.25, 864, 862) != 46 || TaskbarInset.Calculate(true, 3, 2, 1, 1080, 1080) != 48) throw new Exception("Auto-hidden bottom taskbar reserve is incorrect");
     var python = Environment.GetEnvironmentVariable("NETCENTER_TEST_PYTHON") ?? throw new Exception("Test Python path missing");

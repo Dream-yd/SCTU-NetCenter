@@ -20,15 +20,16 @@
 - 校园网账号二级页面：添加、更新、删除多套账号，选择自动认证账号，或停止使用默认账号自动认证。
 - 校园认证：沿用现有 ePortal 认证脚本；已放行的连接不会因选择其他默认账号而自动注销。
 - 移动热点：可查看状态并手动应用配套策略；辅助配置默认关闭策略，需自行确认后启用。
-- 可选快捷操作：蓝牙音频连接、认证日志、清理旧缓存。蓝牙功能依赖单独安装和配置的接收程序，不是开箱即用功能。
+- 蓝牙音频：发行包内置 BluetoothAudioReceiver；打开“蓝牙音频”，选择已配对的手机等设备，将其音频播放到电脑。支持在接收器设置中配置自动重连和输出设备。
+- 其他快捷操作：认证日志、清理旧缓存。
 
 账号密码通过 Windows 当前用户的 DPAPI 加密保存在 `%USERPROFILE%\.netcenter-next\accounts.json`。这保护本地保存的密码，**不改变校园门户本身的传输方式**；当前学校配置使用 HTTP，应在了解对应网络及认证方式后使用。不要提交账号库、门户缓存、日志或真实凭据。
 
 ## 使用前须知
 
-这是首个公开开发快照，尚未完成通用安装与跨学校适配。当前代码仍包含原开发环境的固定目录与校园网参数，请先确认：
+这是公开开发快照，尚未完成通用安装与跨学校适配。当前代码仍包含原开发环境的固定目录与校园网参数，请先确认：
 
-1. Windows 10/11、Windows PowerShell 5.1、.NET 8 SDK（从源码构建）和 Python 3.11。
+1. Windows 10 2004 或 Windows 11、Windows PowerShell 5.1、.NET 8 SDK（从源码构建）和 Python 3.11。蓝牙音频需要支持 A2DP 的蓝牙适配器和已配对设备。
 2. 程序默认从 `%LOCALAPPDATA%\Programs\Python\Python311\python.exe` 启动 Python，且该解释器需要 `pywin32`。其他 Python 安装位置需要调整 `app/MainWindow.xaml.cs`。
 3. 原有配套目录约定为 `E:\CampusAuth`、`E:\MobileHotspotKeeper`、`E:\NetCenter\tools` 和 `E:\NetCenter\assets`。没有 `E:` 盘或需要自定义位置时，必须同时检查 `src/config.json`、`src/backend.py`、`src/collector.ps1`、`src/clear_hotspot_override.ps1` 和 `app/MainWindow.xaml.cs` 中的相关路径。
 4. `src/config.json` 中的校园门户和网段是当前学校环境的配置示例。请先核对本校真实参数；相同 ePortal 名称不意味着认证接口、登录参数和密码方式一致。
@@ -48,14 +49,18 @@ py -3.11 -m pip install --user -r requirements.txt
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Prepare-Dependencies.ps1
 ```
 
-脚本将认证脚本与无凭据的示例配置放入 `E:\CampusAuth`，并准备热点、托盘图标和辅助工具。如果任何目标目录已存在，脚本会中止，需人工处理。下载发行包并解压后，可从解压目录运行 `app\NetCenter.exe`。从源码构建时，可在仓库根目录执行：
+脚本将认证脚本与无凭据的示例配置放入 `E:\CampusAuth`，并准备热点、托盘图标和辅助工具。如果任何目标目录已存在，脚本会中止，需人工处理。下载发行包并解压后，可从解压目录运行 `app\NetCenter.exe`。从源码构建完整发行目录时，请选择一个**不存在的输出目录**：
 
 ```powershell
-dotnet publish .\app\NetCenter.csproj -c Release --no-self-contained -o .\artifacts\release
-.\artifacts\release\NetCenter.exe
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Build-Release.ps1 -OutputDirectory .\artifacts\release
+.\artifacts\release\app\NetCenter.exe
 ```
 
+构建脚本会将蓝牙接收器发布到 `app\bluetooth`。仅执行 `dotnet publish app\NetCenter.csproj` 不会生成蓝牙组件。
+
 左键托盘图标打开或收起；点击“校园认证”或认证卡片上的“账号”进入二级页面。添加账号后，只有明确选择“设为自动认证账号”才会由应用使用该账号自动认证。先检查门户、网段和连接状态，再启用自动认证。
+
+使用蓝牙音频时，先在 Windows 设置中配对手机，点击托盘面板中的“蓝牙音频”，然后在接收器中选择设备并连接。可在接收器设置中将语言切换为中文、开启自动重连，并检查输出设备偏好；接收器可能根据设置切换系统默认音频输出。若旧版接收器已经在运行，启动时会先唤起旧实例。
 
 > `support/campus-auth/config.example.json` 的账号和密码字段为空，应用内管理的校园网密码保存在 DPAPI 账号库中。不要将真实凭据填进仓库文件。
 
@@ -66,8 +71,10 @@ app/                       WPF 托盘界面与操作调用
 src/                       状态采集、多账号存储与认证桥接
 support/campus-auth/       ePortal 认证脚本和无凭据配置示例
 support/hotspot/           移动热点策略脚本和配置示例
-support/tools/             可选蓝牙与旧缓存工具
+support/tools/             旧缓存工具
 assets/                    托盘图标
+vendor/BluetoothAudioReceiver/  随包蓝牙接收器源码及 MIT 许可证
+third-party-licenses/      接收器依赖的许可证与声明
 tests/                     单元、集成与 Windows UI 自动化测试
 tools/                     辅助文件准备及原开发环境迁移工具
 docs/images/               虚拟机内的模拟数据截图
@@ -88,10 +95,10 @@ docs/images/               虚拟机内的模拟数据截图
 ```powershell
 dotnet build .\app\NetCenter.csproj
 # 需先发布测试版本，并将 NETCENTER_TEST_EXE 指向其 NetCenter.exe
-$env:NETCENTER_TEST_EXE = (Resolve-Path .\artifacts\release\NetCenter.exe).Path
+$env:NETCENTER_TEST_EXE = (Resolve-Path .\artifacts\release\app\NetCenter.exe).Path
 python -m unittest discover -s tests -v
 ```
 
 部分测试启动 Windows 窗口、读取本机网络状态或检查原开发机的计划任务；应在隔离的 Windows 测试环境运行，不应将结果等同于真实校园网验收。测试不应使用真实校园网凭据。贡献和问题反馈请参见 [CONTRIBUTING.md](CONTRIBUTING.md)；安全问题请参见 [SECURITY.md](SECURITY.md)。
 
-本仓库当前尚未指定开源许可证；如需在许可证范围外复用代码，请先联系项目维护者。
+蓝牙接收器基于 Noxy229 的 MIT 许可项目，并包含 Dream-yd 分支的修改；署名和依赖许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。本仓库其余部分当前尚未指定开源许可证；如需在许可证范围外复用，请先联系项目维护者。

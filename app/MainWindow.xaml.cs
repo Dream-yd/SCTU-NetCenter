@@ -37,7 +37,7 @@ public partial class MainWindow : Window
         menu.Items.Add("校园网账号", null, (_, _) => Dispatcher.Invoke(() => { OpenPanel(); ShowCampus(this, new RoutedEventArgs()); }));
         menu.Items.Add("应用热点策略", null, (_, _) => Dispatcher.Invoke(() => { OpenPanel(); _ = RunAction(null, @"E:\MobileHotspotKeeper\Keep-HotspotOn.ps1", "热点策略"); }));
         menu.Items.Add("清除热点手动覆盖", null, (_, _) => Dispatcher.Invoke(ClearHotspotOverride));
-        menu.Items.Add("连接蓝牙音频", null, (_, _) => Dispatcher.Invoke(() => { OpenPanel(); _ = RunAction(null, @"E:\NetCenter\tools\bt-connect.ps1", "蓝牙连接"); }));
+        menu.Items.Add("打开蓝牙音频", null, (_, _) => Dispatcher.Invoke(OpenBluetoothReceiver));
         menu.Items.Add("清理旧缓存", null, (_, _) => Dispatcher.Invoke(() => { OpenPanel(); _ = RunAction(null, @"E:\NetCenter\tools\clear-stale-cache.ps1", "旧缓存", 10); }));
         menu.Items.Add("打开认证日志", null, (_, _) => Dispatcher.Invoke(OpenCampusLog));
         menu.Items.Add(new Forms.ToolStripSeparator());
@@ -189,7 +189,12 @@ public partial class MainWindow : Window
         finally { button.IsEnabled = true; }
     }
     private async void HotspotClick(object sender, RoutedEventArgs e) => await RunAction(sender, @"E:\MobileHotspotKeeper\Keep-HotspotOn.ps1", "热点策略");
-    private async void BluetoothClick(object sender, RoutedEventArgs e) => await RunAction(sender, @"E:\NetCenter\tools\bt-connect.ps1", "蓝牙连接");
+    private void BluetoothClick(object sender, RoutedEventArgs e) => OpenBluetoothReceiver();
+    private void OpenBluetoothReceiver()
+    {
+        try { BluetoothReceiverLauncher.Open(AppContext.BaseDirectory); StatusText.Text = "已打开蓝牙音频"; }
+        catch (Exception ex) { OpenPanel(); StatusText.Text = "蓝牙音频打开失败：" + ex.Message; }
+    }
     private async Task RunAction(object? sender, string script, string label, int? additionalSuccessCode = null)
     {
         var button = sender as System.Windows.Controls.Button;

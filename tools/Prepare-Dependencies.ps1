@@ -12,6 +12,6 @@ Copy-Item -LiteralPath (Join-Path $project 'support\campus-auth\campus_auth.py')
 Copy-Item -LiteralPath (Join-Path $project 'support\campus-auth\config.example.json') -Destination 'E:\CampusAuth\config.json'
 Copy-Item -LiteralPath (Join-Path $project 'support\hotspot\Keep-HotspotOn.ps1'),(Join-Path $project 'support\hotspot\Set-Hotspot.ps1') -Destination 'E:\MobileHotspotKeeper'
 Copy-Item -LiteralPath (Join-Path $project 'support\hotspot\config.example.json') -Destination 'E:\MobileHotspotKeeper\config.json'
-Copy-Item -LiteralPath (Join-Path $project 'support\tools\bt-connect.ps1'),(Join-Path $project 'support\tools\clear-stale-cache.ps1') -Destination 'E:\NetCenter\tools'
+Copy-Item -LiteralPath (Join-Path $project 'support\tools\clear-stale-cache.ps1') -Destination 'E:\NetCenter\tools'
 Get-ChildItem -LiteralPath (Join-Path $project 'assets') -Filter 'icon-tray-*.ico' -File | Copy-Item -Destination 'E:\NetCenter\assets'
 Write-Output '辅助文件已准备。热点策略默认关闭；账号请在应用内添加。'
