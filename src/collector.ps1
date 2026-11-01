@@ -405,6 +405,14 @@ function Get-LinkState {
 function Get-PortalState {
     param($Link)
     $onCampus = ($Link.CampusIps.Count -gt 0)
+    # TUN can accept a TCP connection even when the private portal is unreachable.
+    # Require a campus address before interpreting probes as campus authorization.
+    if (-not $onCampus) {
+        return [pscustomobject]@{
+            Code = 'offcampus'; Text = '非校园网'; Ms = -1
+            Detail = '未检测到校园网段 IP，无需校园认证'; Severity = 'idle'
+        }
+    }
     $tcp = Test-TcpTimed -Target $Cfg.portal -Port 80 -TimeoutMs 350
     if (-not $tcp.Ok) {
         $sev = 'idle'

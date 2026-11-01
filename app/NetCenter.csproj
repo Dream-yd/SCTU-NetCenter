@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <PropertyGroup><Version>0.2.1</Version><AssemblyVersion>0.2.1.0</AssemblyVersion><FileVersion>0.2.1.0</FileVersion></PropertyGroup>
   <ItemGroup><Content Include="Start-NetCenter.vbs" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" /><Content Include="..\src\*.ps1;..\src\config.json" Link="backend\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /><Content Include="..\src\*.py" Link="backend\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
 </Project>
