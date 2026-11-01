@@ -1,0 +1,14 @@
+{
+  "portal": "http://172.16.10.76",
+  "user_id": "",
+  "password": "",
+  "service": [
+    "default",
+    "校园网"
+  ],
+  "password_mode": "plain",
+  "timeout": 6,
+  "campus_prefixes": [
+    "172.30."
+  ]
+}

@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0-windows</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup><Compile Include="ActionRunnerChecks.cs"/><Compile Include="../app/CampusSessionDisplay.cs" Link="CampusSessionDisplay.cs"/><Compile Include="../app/PowerShellActionRunner.cs" Link="PowerShellActionRunner.cs"/><Compile Include="../app/BackendProcessRunner.cs" Link="BackendProcessRunner.cs"/><Compile Include="../app/HotspotDisplay.cs" Link="HotspotDisplay.cs"/><Compile Include="../app/TaskbarInset.cs" Link="TaskbarInset.cs"/></ItemGroup>
+</Project>

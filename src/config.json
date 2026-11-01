@@ -1,0 +1,17 @@
+{
+  "campusDir": "E:\\CampusAuth",
+  "hotspotDir": "E:\\MobileHotspotKeeper",
+  "refreshSeconds": 1,
+  "linkSeconds": 2,
+  "probeSeconds": 10,
+  "campusPrefixes": [
+    "172.30."
+  ],
+  "portal": "172.16.10.76",
+  "probeUrl": "http://223.5.5.5/",
+  "gptUrl": "https://chatgpt.com/",
+  "gptSeconds": 15,
+  "directIpUrl": "https://myip.ipip.net",
+  "proxyIpUrl": "https://ipinfo.io/json",
+  "egressSeconds": 30
+}

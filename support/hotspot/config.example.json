@@ -1,0 +1,9 @@
+{
+  "Enabled": false,
+  "OnEthernet": "on",
+  "OnWifi": "off",
+  "NoLink": "keep",
+  "ManualOverrideUntilReboot": true,
+  "RequireAcPower": false,
+  "HeartbeatMinutes": 30
+}

@@ -1,0 +1,23 @@
+app/bin/
+app/obj/
+__pycache__/
+*.pyc
+
+artifacts/
+tests/bin/
+tests/obj/
+
+# Local state, credentials and machine-specific records
+docs/重构计划.md
+support/campus-auth/config.json
+support/campus-auth/query_cache.txt
+support/campus-auth/last_state.txt
+support/campus-auth/.run.lock
+support/hotspot/config.json
+support/hotspot/state.json
+**/logs/
+*.log
+*.log.*
+*.bak
+.env
+.env.*

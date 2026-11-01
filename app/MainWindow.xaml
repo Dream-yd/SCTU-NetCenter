@@ -1,0 +1,96 @@
+<Window x:Class="NetCenter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NetCenter 网络中心" Width="392" Height="502" ResizeMode="NoResize"
+        WindowStyle="None" ShowInTaskbar="False" Topmost="True" Background="#202326"
+        Foreground="#F4F5F5" FontFamily="Segoe UI, Microsoft YaHei UI" UseLayoutRounding="True" Opacity="0">
+ <Window.Resources>
+  <SolidColorBrush x:Key="CardSurface" Color="#2A2E31"/>
+  <SolidColorBrush x:Key="MutedText" Color="#B6BDC0"/>
+  <SolidColorBrush x:Key="CardBorder" Color="#394045"/>
+  <Style TargetType="Button">
+   <Setter Property="Foreground" Value="#F4F5F5"/><Setter Property="Background" Value="#353B3F"/>
+   <Setter Property="BorderBrush" Value="#4B5459"/><Setter Property="BorderThickness" Value="1"/>
+   <Setter Property="Padding" Value="10,6"/><Setter Property="Cursor" Value="Hand"/><Setter Property="FontSize" Value="12"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+    <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+    </Border>
+    <ControlTemplate.Triggers>
+     <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="ButtonBorder" Property="Opacity" Value="0.83"/></Trigger>
+     <Trigger Property="IsPressed" Value="True"><Setter TargetName="ButtonBorder" Property="Opacity" Value="0.67"/></Trigger>
+     <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#A8D6FF"/><Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2"/></Trigger>
+     <Trigger Property="IsEnabled" Value="False"><Setter TargetName="ButtonBorder" Property="Opacity" Value="0.45"/></Trigger>
+    </ControlTemplate.Triggers>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
+  <Style TargetType="TextBox"><Setter Property="Padding" Value="9,7"/><Setter Property="Margin" Value="0,5,0,11"/><Setter Property="Background" Value="#202427"/><Setter Property="Foreground" Value="#F4F5F5"/><Setter Property="CaretBrush" Value="#F4F5F5"/><Setter Property="BorderBrush" Value="#596166"/></Style>
+  <Style TargetType="PasswordBox"><Setter Property="Padding" Value="9,7"/><Setter Property="Margin" Value="0,5,0,11"/><Setter Property="Background" Value="#202427"/><Setter Property="Foreground" Value="#F4F5F5"/><Setter Property="CaretBrush" Value="#F4F5F5"/><Setter Property="BorderBrush" Value="#596166"/></Style>
+  <Style x:Key="Card" TargetType="Border"><Setter Property="Background" Value="{StaticResource CardSurface}"/><Setter Property="BorderBrush" Value="{StaticResource CardBorder}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="CornerRadius" Value="6"/><Setter Property="Margin" Value="0,0,0,6"/></Style>
+  <Style x:Key="Caption" TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource MutedText}"/><Setter Property="FontSize" Value="11"/></Style>
+  <Style x:Key="Value" TargetType="TextBlock"><Setter Property="Foreground" Value="#FAFBFB"/><Setter Property="FontSize" Value="15"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="TextTrimming" Value="CharacterEllipsis"/></Style>
+  <Style x:Key="Detail" TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource MutedText}"/><Setter Property="FontSize" Value="10.5"/><Setter Property="TextTrimming" Value="CharacterEllipsis"/></Style>
+  <Style TargetType="ListBoxItem"><Setter Property="Foreground" Value="#F4F5F5"/><Setter Property="Padding" Value="9,7"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Border x:Name="ItemBorder" Background="Transparent" CornerRadius="4" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border><ControlTemplate.Triggers>
+    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#343B3F"/></Trigger>
+    <Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#174D72"/></Trigger>
+    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="ItemBorder" Property="BorderBrush" Value="#A8D6FF"/><Setter TargetName="ItemBorder" Property="BorderThickness" Value="1"/></Trigger>
+   </ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+  </Style>
+ </Window.Resources>
+ <Border BorderBrush="#454B4E" BorderThickness="1" CornerRadius="8" Padding="16,15,16,12">
+  <Grid><Grid.RowDefinitions><RowDefinition Height="53"/><RowDefinition Height="*"/><RowDefinition Height="22"/></Grid.RowDefinitions>
+   <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <StackPanel><TextBlock Text="NetCenter" FontSize="19" FontWeight="SemiBold"/><TextBlock Text="网络状态与快捷操作" Foreground="#B6BDC0" FontSize="10.5" Margin="0,2,0,0"/></StackPanel>
+    <Border x:Name="OverallBadge" Grid.Column="1" Background="#8A8A8A" CornerRadius="4" Height="24" MinWidth="65" VerticalAlignment="Top"><TextBlock x:Name="OverallText" Text="检测中" Foreground="#151515" FontWeight="SemiBold" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Center"/></Border>
+   </Grid>
+   <Grid Grid.Row="1" x:Name="DashboardPage"><Grid.RowDefinitions><RowDefinition Height="73"/><RowDefinition Height="73"/><RowDefinition Height="73"/><RowDefinition Height="90"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+    <Border Grid.Row="0" Style="{StaticResource Card}"><Grid Margin="13,6"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+     <Border x:Name="LinkAccent" Width="3" Background="#8A8A8A" HorizontalAlignment="Left" Margin="-13,5,0,5" IsHitTestVisible="False"/>
+     <StackPanel><TextBlock Text="链路" Style="{StaticResource Caption}"/><TextBlock x:Name="LinkText" Text="正在读取…" Style="{StaticResource Value}" Margin="0,3,0,1"/><TextBlock x:Name="LinkDetail" Style="{StaticResource Detail}" Text="—"/></StackPanel>
+     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top"><TextBlock x:Name="SpeedDown" Text="↓ --" Foreground="#8CDC85" FontSize="10.5" Margin="0,0,10,0"/><TextBlock x:Name="SpeedUp" Text="↑ --" Foreground="#8BCEF4" FontSize="10.5"/></StackPanel>
+    </Grid></Border>
+    <Border Grid.Row="1" Style="{StaticResource Card}"><Grid Margin="13,6"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+     <Border x:Name="PortalAccent" Width="3" Background="#8A8A8A" HorizontalAlignment="Left" Margin="-13,5,0,5" IsHitTestVisible="False"/>
+     <StackPanel><TextBlock Text="校园认证" Style="{StaticResource Caption}"/><TextBlock x:Name="PortalText" Text="正在读取…" Style="{StaticResource Value}" Margin="0,3,0,1"/><TextBlock x:Name="PortalDetail" Text="—" Style="{StaticResource Detail}"/></StackPanel>
+     <Button Grid.Column="1" Content="账号  ›" Click="ShowCampus" VerticalAlignment="Center" Padding="9,5" AutomationProperties.Name="校园网账号与认证"/>
+    </Grid></Border>
+    <Border Grid.Row="2" Style="{StaticResource Card}"><Grid Margin="13,6"><Border x:Name="HotspotAccent" Width="3" Background="#8A8A8A" HorizontalAlignment="Left" Margin="-13,5,0,5" IsHitTestVisible="False"/><StackPanel><TextBlock Text="移动热点" Style="{StaticResource Caption}"/><TextBlock x:Name="HotspotText" Text="正在读取…" Style="{StaticResource Value}" Margin="0,3,0,1"/><TextBlock x:Name="HotspotDetail" Text="—" Style="{StaticResource Detail}"/></StackPanel></Grid></Border>
+    <Border Grid.Row="3" Style="{StaticResource Card}"><Grid><Border x:Name="ClashAccent" Width="3" Background="#8A8A8A" HorizontalAlignment="Left" Margin="0,10,0,10" IsHitTestVisible="False"/><StackPanel Margin="13,6"><TextBlock Text="Clash" Style="{StaticResource Caption}"/><TextBlock x:Name="ClashText" Text="正在读取…" Style="{StaticResource Value}" Margin="0,3,0,1"/><TextBlock x:Name="ClashDetail" Text="—" Style="{StaticResource Detail}"/><TextBlock x:Name="DetailText" Text="出口检测中…" Style="{StaticResource Detail}" Margin="0,2,0,0"/></StackPanel></Grid></Border>
+    <Grid Grid.Row="4" VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="6"/><ColumnDefinition/><ColumnDefinition Width="6"/><ColumnDefinition/><ColumnDefinition Width="6"/><ColumnDefinition/></Grid.ColumnDefinitions>
+     <Button Grid.Column="0" Content="校园认证" Click="ShowCampus" Background="#006FBF" BorderBrush="#006FBF"/><Button Grid.Column="2" Content="应用热点" Click="HotspotClick"/><Button Grid.Column="4" Content="蓝牙" Click="BluetoothClick"/><Button Grid.Column="6" Content="收起" Click="HideClick"/>
+    </Grid>
+   </Grid>
+   <ScrollViewer Grid.Row="1" x:Name="CampusPage" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer.Resources>
+     <Style TargetType="ScrollBar">
+      <Setter Property="Width" Value="8"/><Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+       <Grid Background="Transparent"><Track x:Name="PART_Track" IsDirectionReversed="True">
+        <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent" BorderThickness="0" Focusable="False"/></Track.DecreaseRepeatButton>
+        <Track.Thumb><Thumb><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="#697277" CornerRadius="3" Margin="1,0"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+        <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent" BorderThickness="0" Focusable="False"/></Track.IncreaseRepeatButton>
+       </Track></Grid>
+      </ControlTemplate></Setter.Value></Setter>
+     </Style>
+    </ScrollViewer.Resources>
+    <StackPanel Margin="0,0,5,0">
+     <Button Content="‹ 返回网络概览" Click="ShowDashboard" HorizontalAlignment="Left" Margin="0,0,0,11" Padding="9,5"/>
+     <TextBlock Text="校园网账号" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="管理账号与自动认证" Style="{StaticResource Caption}" Margin="0,3,0,12"/>
+     <Border Style="{StaticResource Card}" Padding="12,11"><StackPanel>
+      <TextBlock Text="已保存的账号" FontSize="13" FontWeight="SemiBold"/><TextBlock x:Name="DefaultAccount" Text="自动认证账号：未设置" Style="{StaticResource Caption}" Margin="0,5,0,8"/>
+      <Grid><ListBox x:Name="Accounts" DisplayMemberPath="Display" MinHeight="56" MaxHeight="110" Padding="3" Background="#202427" Foreground="#F4F5F5" BorderBrush="#4A5256" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="AccountSelected"/>
+       <TextBlock Text="还没有保存账号" Foreground="#AAB2B6" FontSize="11" Margin="12,0" VerticalAlignment="Center" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding ElementName=Accounts, Path=Items.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+      </Grid>
+      <WrapPanel Margin="0,10,0,0"><Button Content="立即认证" Click="AuthenticateClick" Background="#006FBF" BorderBrush="#006FBF" Margin="0,0,6,6"/><Button Content="设为自动认证账号" Click="DefaultClick" Margin="0,0,6,6"/><Button Content="停止自动认证" Click="ClearDefaultClick" Margin="0,0,6,6"/><Button Content="删除" Click="DeleteClick" Margin="0,0,6,6"/></WrapPanel>
+      <TextBlock Text="已放行时不会注销当前会话。" Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+     </StackPanel></Border>
+     <Border Style="{StaticResource Card}" Padding="12,11" Margin="0,3,0,6"><StackPanel>
+      <TextBlock Text="添加或更新账号" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,11"/><TextBlock Text="账号名称"/><TextBox x:Name="AccountName" AutomationProperties.Name="账号名称"/><TextBlock Text="校园网账号"/><TextBox x:Name="UserId" AutomationProperties.Name="校园网账号"/><TextBlock Text="校园网密码"/><PasswordBox x:Name="Password" AutomationProperties.Name="校园网密码"/><Button Content="保存账号" Click="SaveClick" Background="#006FBF" BorderBrush="#006FBF" HorizontalAlignment="Left"/><TextBlock Text="密码由 Windows 当前账户加密保存。" Style="{StaticResource Caption}" Margin="0,9,0,0"/>
+     </StackPanel></Border>
+    </StackPanel>
+   </ScrollViewer>
+   <TextBlock x:Name="StatusText" Grid.Row="2" Foreground="#B6BDC0" VerticalAlignment="Bottom" FontSize="10.5" TextTrimming="CharacterEllipsis" Text="正在更新网络状态…"/>
+  </Grid>
+ </Border>
+</Window>

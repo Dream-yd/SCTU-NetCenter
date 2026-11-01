@@ -1,0 +1,28 @@
+name: 问题反馈
+description: 报告可复现的问题，避免包含敏感信息
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: 请先移除账号、密码、令牌、MAC 地址、真实认证参数和其他个人信息。
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 问题描述与预期行为
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Windows 版本、运行方式和网络环境（请勿填写敏感信息）
+  - type: textarea
+    id: logs
+    attributes:
+      label: 已脱敏的日志或截图（可选）
